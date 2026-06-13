@@ -1,8 +1,5 @@
 # dependencies
 .venv/
 
-# ruff
-.ruff_cache/
-
 # python cache
 __pycache__/
