@@ -46,7 +46,7 @@ bonus_column = None
 bonus_row = None
 
 
-# FUNCTIONS================================
+# region FUNCTIONS
 def move_block():
   global \
     score, \
@@ -177,7 +177,7 @@ def f_play(event=None):
     window.bind("<Return>", f_resume)
     start_panel.destroy()
     bn_play.destroy()
-    screen_frame.pack(fill="both", expand=True)
+    playing_tab.pack(fill="both", expand=True)
     block.grid(column=block_column, row=block_row, sticky=NSEW)
     spawn_target()
     move_block()
@@ -278,100 +278,56 @@ def f_right(event=None):
   direction = "right"
 
 
-# FRAMES===================================
+# endregion FUNCTIONS
+
+# region FRAMES
+start_tab = Frame(window)
+start_tab.columnconfigure(0, weight=1)
+
 start_panel = Frame(window)
 start_panel.columnconfigure(0, weight=1)
 
-difficulty_panel = Frame(start_panel)
+bn_difficulty = Button(
+  start_panel,
+  text=f"Difficulty: {difficulty}",
+  fg="green",
+  bg="white",
+  command=f_difficulty,
+)
+
+bn_play = Button(
+  start_tab,
+  text="PLAY",
+  font=("times new roman", 20, "bold"),
+  fg="black",
+  bg="white",
+  command=f_play,
+)
+
+
+# region difficulty panel
+difficulty_panel = Frame(start_tab)
 difficulty_panel.columnconfigure(0, weight=1)
 
-screen_frame = Frame(window)
-screen_frame.columnconfigure(0, weight=1)
-screen_frame.rowconfigure(0, weight=1)
-screen_frame.rowconfigure(1, weight=200)
-screen_frame.rowconfigure(2, weight=1)
+bn_easy = Button(difficulty_panel, text="easy", fg="white", bg="green", command=f_easy)
+bn_medium = Button(
+  difficulty_panel, text="medium", fg="white", bg="orange", command=f_medium
+)
+bn_hard = Button(difficulty_panel, text="hard", fg="white", bg="red", command=f_hard)
 
-top_panel = Frame(screen_frame, bg="black")
-top_panel.columnconfigure(0, weight=1)
-top_panel.columnconfigure(1, weight=1)
-top_panel.columnconfigure(2, weight=1)
-top_panel.columnconfigure(3, weight=1)
+# endregion difficulty panel
 
-area_frame = Frame(screen_frame, bg="white")
-area_frame.columnconfigure(0, weight=1)
-area_frame.columnconfigure(1, weight=1)
-area_frame.columnconfigure(2, weight=1)
-area_frame.columnconfigure(3, weight=1)
-area_frame.columnconfigure(4, weight=1)
-area_frame.columnconfigure(5, weight=1)
-area_frame.columnconfigure(6, weight=1)
-area_frame.columnconfigure(7, weight=1)
-area_frame.columnconfigure(8, weight=1)
-area_frame.columnconfigure(9, weight=1)
-area_frame.columnconfigure(10, weight=1)
-area_frame.columnconfigure(11, weight=1)
-area_frame.columnconfigure(12, weight=1)
-area_frame.columnconfigure(13, weight=1)
-area_frame.rowconfigure(0, weight=1)
-area_frame.rowconfigure(1, weight=1)
-area_frame.rowconfigure(2, weight=1)
-area_frame.rowconfigure(3, weight=1)
-area_frame.rowconfigure(4, weight=1)
-area_frame.rowconfigure(5, weight=1)
-area_frame.rowconfigure(6, weight=1)
-area_frame.rowconfigure(7, weight=1)
-area_frame.rowconfigure(8, weight=1)
-area_frame.rowconfigure(9, weight=1)
-area_frame.rowconfigure(10, weight=1)
-area_frame.rowconfigure(11, weight=1)
-area_frame.rowconfigure(12, weight=1)
-area_frame.rowconfigure(13, weight=1)
-area_frame.rowconfigure(14, weight=1)
-area_frame.rowconfigure(15, weight=1)
-area_frame.rowconfigure(16, weight=1)
-area_frame.rowconfigure(17, weight=1)
-area_frame.rowconfigure(18, weight=1)
-area_frame.rowconfigure(19, weight=1)
-area_frame.rowconfigure(20, weight=1)
+playing_tab = Frame(window)
+playing_tab.columnconfigure(0, weight=1)
+playing_tab.rowconfigure(0, weight=1)
+playing_tab.rowconfigure(1, weight=200)
+playing_tab.rowconfigure(2, weight=1)
 
-button_frame = Frame(screen_frame, bg="grey")
-button_frame.columnconfigure(0, weight=1)
-button_frame.columnconfigure(1, weight=1)
-button_frame.columnconfigure(2, weight=1)
+# region top bar
+top_panel = Frame(playing_tab, bg="black")
+for i in range(4):
+  top_panel.columnconfigure(i, weight=1)
 
-option_panel = Frame(area_frame, bg="black")
-option_panel.columnconfigure(0, weight=1)
-option_panel.columnconfigure(1, weight=1)
-option_panel.columnconfigure(2, weight=1)
-option_panel.columnconfigure(3, weight=1)
-option_panel.rowconfigure(0, weight=1)
-option_panel.rowconfigure(1, weight=2)
-option_panel.rowconfigure(2, weight=1)
-option_panel.rowconfigure(3, weight=2)
-option_panel.rowconfigure(4, weight=1)
-option_panel.rowconfigure(5, weight=2)
-option_panel.rowconfigure(6, weight=1)
-option_panel.rowconfigure(7, weight=2)
-option_panel.rowconfigure(8, weight=1)
-
-difficulty_panel_option = Frame(option_panel, bg="red")
-difficulty_panel_option.columnconfigure(0, weight=1)
-difficulty_panel_option.columnconfigure(1, weight=3)
-difficulty_panel_option.columnconfigure(2, weight=1)
-difficulty_panel_option.rowconfigure(0, weight=1)
-
-result_panel = Frame(area_frame, bg="black")
-result_panel.columnconfigure(0, weight=1)
-result_panel.columnconfigure(1, weight=1)
-result_panel.columnconfigure(2, weight=1)
-result_panel.columnconfigure(3, weight=1)
-result_panel.rowconfigure(0, weight=1)
-result_panel.rowconfigure(1, weight=1)
-result_panel.rowconfigure(2, weight=1)
-result_panel.rowconfigure(3, weight=1)
-
-
-# MESSAGES================================
 score_display = Label(
   top_panel,
   text=f"Score: {score}",
@@ -379,6 +335,15 @@ score_display = Label(
   fg="white",
   bg="black",
 )
+# endregion top bar
+
+# region area
+area_frame = Frame(playing_tab, bg="white")
+for i in range(14):
+  area_frame.columnconfigure(i, weight=1)
+for i in range(21):
+  area_frame.rowconfigure(i, weight=1)
+
 
 block = Label(area_frame, text="", font=("arial", 1), fg="black", bg="black")
 
@@ -386,13 +351,49 @@ target = Label(area_frame, text="", font=("arial", 1), fg="red", bg="red")
 
 bonus = Label(area_frame, text="", font=("arial", 1), fg="red", bg="red")
 
-difficulty_option = Label(
-  difficulty_panel_option,
-  text=difficulty,
-  font=("times new roman", 15),
-  fg="black",
-  bg="white",
+# endregion area
+
+# region buttons
+buttons_panel = Frame(playing_tab, bg="grey")
+for i in range(3):
+  buttons_panel.columnconfigure(i, weight=1)
+
+
+bn_up = Button(
+  buttons_panel, text="↑", font=("arial", 10), fg="white", bg="black", command=f_up
 )
+bn_down = Button(
+  buttons_panel, text="↓", font=("arial", 10), fg="white", bg="black", command=f_down
+)
+bn_left = Button(
+  buttons_panel, text="←", font=("arial", 10), fg="white", bg="black", command=f_left
+)
+bn_right = Button(
+  buttons_panel, text="→", font=("arial", 10), fg="white", bg="black", command=f_right
+)
+
+# endregion buttons
+
+# region option panel
+option_panel = Frame(area_frame, bg="black")
+for i in range(4):
+  option_panel.columnconfigure(i, weight=1)
+for i in range(9):
+  option_panel.rowconfigure(i, weight=1)
+
+difficulty_panel_option = Frame(option_panel, bg="red")
+difficulty_panel_option.rowconfigure(0, weight=1)
+for i in range(5):
+  difficulty_panel_option.columnconfigure(i, weight=1)
+# endregion option panel
+
+# region result panel
+result_panel = Frame(area_frame, bg="black")
+for i in range(4):
+  difficulty_panel_option.columnconfigure(i, weight=1)
+for i in range(4):
+  difficulty_panel_option.rowconfigure(i, weight=1)
+
 
 result_message = Label(
   result_panel,
@@ -410,30 +411,23 @@ score_result = Label(
   bg="black",
 )
 
+# endregion result panel
 
-# BUTONS==================================
-bn_difficulty = Button(
-  start_panel,
-  text=f"Difficulty: {difficulty}",
-  fg="green",
-  bg="white",
-  command=f_difficulty,
-)
+# endregion FRAMES
 
-bn_easy = Button(difficulty_panel, text="easy", fg="white", bg="green", command=f_easy)
-bn_medium = Button(
-  difficulty_panel, text="medium", fg="white", bg="orange", command=f_medium
-)
-bn_hard = Button(difficulty_panel, text="hard", fg="white", bg="red", command=f_hard)
+# region MESSAGES
 
-bn_play = Button(
-  window,
-  text="PLAY",
-  font=("times new roman", 20, "bold"),
+difficulty_option = Label(
+  difficulty_panel_option,
+  text=difficulty,
+  font=("times new roman", 15),
   fg="black",
   bg="white",
-  command=f_play,
 )
+
+# endregion MESSAGES
+
+# region BUTONS
 
 bn_options = Button(
   top_panel, text=":", font=("arial", 15), fg="white", bg="black", command=f_option
@@ -499,21 +493,9 @@ bn_quit_o = Button(
   command=window.destroy,
 )
 
-bn_up = Button(
-  button_frame, text="↑", font=("arial", 10), fg="white", bg="black", command=f_up
-)
-bn_down = Button(
-  button_frame, text="↓", font=("arial", 10), fg="white", bg="black", command=f_down
-)
-bn_left = Button(
-  button_frame, text="←", font=("arial", 10), fg="white", bg="black", command=f_left
-)
-bn_right = Button(
-  button_frame, text="→", font=("arial", 10), fg="white", bg="black", command=f_right
-)
+# endregion BUTONS
 
-
-# KEY BINDINGS==============================
+# region KEY BINDINGS
 window.bind("<Return>", f_play)
 window.bind("<space>", f_option)
 window.bind("w", f_up)
@@ -567,7 +549,7 @@ start_panel.pack(fill="x")
 top_panel.grid(column=0, row=0, sticky=NSEW)
 area_frame.grid(column=0, row=1, sticky=NSEW)
 difficulty_panel_option.grid(column=1, row=5, columnspan=2, sticky=NSEW)
-button_frame.grid(column=0, row=2, sticky=NSEW)
+buttons_panel.grid(column=0, row=2, sticky=NSEW)
 
 
 window.mainloop()
